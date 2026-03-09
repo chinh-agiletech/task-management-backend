@@ -13,16 +13,16 @@ export class Task {
   id!: string;
 
   @Column({ nullable: true })
-  title!: string | null;
+  title!: string;
 
   @Column({ nullable: true })
-  description!: string | null;
+  description!: string;
 
   @Column({ nullable: true })
-  image!: string | null;
+  image!: string;
 
   @Column({ nullable: true })
-  code!: string | null;
+  code!: string;
 
   @Column({ default: StatusTask.TODO })
   statusTask!: StatusTask;

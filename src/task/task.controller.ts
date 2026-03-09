@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { StatusTask } from './entities/task.entity';
 
 @Controller('task')
 export class TaskController {
@@ -38,5 +40,15 @@ export class TaskController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.taskService.remove(id);
+  }
+
+  @Put('/:id/update-status')
+  updateStatus(@Param('id') id: string, status: StatusTask) {
+    return this.taskService.updatedStatus(id, status);
+  }
+
+  @Put('/:id/assign-task')
+  assginTask(@Param('id') id: string, userId: string) {
+    return this.taskService.assginTask(id, userId);
   }
 }
