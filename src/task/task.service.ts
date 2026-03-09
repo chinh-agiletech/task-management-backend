@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { StatusTask, Task } from './entities/task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FilterRequest } from './type';
 
 @Injectable()
 export class TaskService {
@@ -12,13 +17,30 @@ export class TaskService {
     private taskRepository: Repository<Task>,
   ) {}
 
-  create(createTaskDto: CreateTaskDto) {
+  async create(createTaskDto: CreateTaskDto) {
+    const dataCode = await this.taskRepository.findOne({
+      where: { code: createTaskDto.code },
+    });
+    if (dataCode) {
+      throw new ConflictException('Task already');
+    }
     const task = this.taskRepository.create(createTaskDto);
     return this.taskRepository.save(task);
   }
 
-  findAll() {
-    return this.taskRepository.find();
+  async findAll(request: FilterRequest) {
+    const { name, statusTask, userId, orderBy } = request;
+
+    return this.taskRepository.find({
+      where: {
+        ...(name && { title: name }),
+        ...(statusTask && { status_task: statusTask }),
+        ...(userId && { user_id: userId }),
+      },
+      order: {
+        createdAt: orderBy || 'DESC',
+      },
+    });
   }
 
   async findOne(id: string) {

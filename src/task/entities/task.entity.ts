@@ -2,9 +2,9 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum StatusTask {
-  TODO = 'TODO',
-  IN_PROGRESS = 'IN_PROGRESS',
-  DONE = 'DONE',
+  TODO = 1,
+  IN_PROGRESS = 2,
+  DONE = 3,
 }
 
 @Entity()
@@ -29,6 +29,9 @@ export class Task {
 
   @Column({ nullable: true })
   userId!: string;
+
+  @Column({ nullable: true })
+  managermentId!: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsString } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsUUID } from 'class-validator';
+import { StatusTask } from '../entities/task.entity';
 
 export class CreateTaskDto {
   @IsString()
@@ -8,9 +8,23 @@ export class CreateTaskDto {
   @IsString()
   description!: string;
 
+  @IsOptional()
   @IsString()
-  image!: string;
+  image?: string;
 
+  @IsOptional()
   @IsString()
-  code!: string;
+  code?: string;
+
+  @IsOptional()
+  @IsEnum(StatusTask)
+  statusTask?: StatusTask;
+
+  @IsOptional()
+  @IsUUID()
+  userId?: string;
+
+  @IsOptional()
+  @IsUUID()
+  managermentId?: string;
 }

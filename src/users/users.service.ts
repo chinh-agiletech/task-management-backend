@@ -23,7 +23,11 @@ export class UsersService {
   }
 
   findAll() {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      order: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findOne(id: string) {
@@ -43,7 +47,7 @@ export class UsersService {
       where: { email },
     });
 
-    if (!user) {
+    if (user) {
       throw new NotFoundException(`User with email ${email} not found`);
     }
 

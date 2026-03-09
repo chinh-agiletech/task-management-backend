@@ -8,12 +8,14 @@ import {
   Delete,
   Put,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { StatusTask } from './entities/task.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import type { FilterRequest } from './type';
 
 @Controller('task')
 @UseGuards(JwtAuthGuard)
@@ -26,8 +28,8 @@ export class TaskController {
   }
 
   @Get()
-  findAll() {
-    return this.taskService.findAll();
+  findAll(@Query() query: FilterRequest) {
+    return this.taskService.findAll(query);
   }
 
   @Get(':id')
