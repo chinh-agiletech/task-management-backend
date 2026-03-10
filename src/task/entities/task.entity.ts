@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Sprint } from 'src/sprints/entities/sprint.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 export enum StatusTask {
   TODO = 1,
@@ -38,4 +39,7 @@ export class Task {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt!: Date;
+
+  @ManyToOne(() => Sprint)
+  sprint!: Sprint;
 }
